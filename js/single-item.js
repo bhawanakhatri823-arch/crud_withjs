@@ -29,3 +29,14 @@ function createSingleItem(item) {
 
   return div;
 }
+import { editCompleted, removeItem } from "./app.js";
+
+function createSingleItem(item) {
+  // ....
+
+  // Add event listener for remove button
+  const removeBtn = div.querySelector(".remove-btn");
+  removeBtn.addEventListener("click", () => removeItem(item.id));
+
+  return div;
+}
