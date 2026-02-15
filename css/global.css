@@ -12,6 +12,7 @@ body {
   font-weight: 400;
   line-height: 1.2;
   color: #222;
+  min-height: 100vh;
 }
 
 .section-center {
@@ -22,4 +23,8 @@ body {
   border-radius: 0.25rem;
   padding: 2rem;
   position: relative;
+}
+.section-center:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
 }
