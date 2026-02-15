@@ -1,7 +1,7 @@
-import { addItem, updateItemName } from "./app.js";
+import { addItem, updateItemName } from "./app.js"; // edited
 
 // Create Form Element
-export function createForm() {
+export function createForm(editId, itemToEdit) {
   const form = document.createElement("form");
 
   form.innerHTML = `
@@ -10,7 +10,7 @@ export function createForm() {
       <input
         type="text"
         class="form-input"
-        placeholder="e.g. eggs
+        placeholder="e.g. eggs"
         value="${itemToEdit ? itemToEdit.name : ""}"
       />
       <input
@@ -18,9 +18,8 @@ export function createForm() {
         class="form-date"
         value="${itemToEdit && itemToEdit.dueDate ? itemToEdit.dueDate : ""}"
       />
-
       <button type="submit" class="btn">
-        add item
+        ${editId ? "update item" : "add item"}
       </button>
     </div>
   `;
@@ -28,15 +27,14 @@ export function createForm() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const input = form.querySelector(".form-input");
-    const value = input.value.trim();
     const dateInput = form.querySelector(".form-date");
+    const value = input.value.trim();
     const dueDate = dateInput.value;
 
     if (!value) {
       alert("Please provide value");
       return;
     }
-
     if (editId) {
       updateItemName(value, dueDate);
     } else {

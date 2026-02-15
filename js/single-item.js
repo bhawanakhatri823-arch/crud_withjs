@@ -1,5 +1,6 @@
 import { editCompleted, removeItem, setEditId } from "./app.js";
 
+// Format due date for display
 function formatDueDate(dateString) {
   if (!dateString) return "";
   const date = new Date(dateString + "T00:00:00");
@@ -24,6 +25,7 @@ function isOverdue(dateString) {
   return date < today;
 }
 
+// Create SingleItem Element
 export function createSingleItem(item) {
   const div = document.createElement("div");
   div.className = "single-item";
@@ -36,9 +38,12 @@ export function createSingleItem(item) {
 
   div.innerHTML = `
     <input type="checkbox" ${item.completed ? "checked" : ""} />
-    <p style="text-decoration: ${item.completed ? "line-through" : "none"}">
-      ${item.name}
-    </p>
+    <div class="item-content">
+      <p style="text-decoration: ${item.completed ? "line-through" : "none"}">
+        ${item.name}
+      </p>
+      ${dueDateDisplay}
+    </div>
     <button class="btn icon-btn edit-btn" type="button">
       <i class="fa-regular fa-pen-to-square"></i>
     </button>
@@ -49,10 +54,8 @@ export function createSingleItem(item) {
 
   const checkbox = div.querySelector('input[type="checkbox"]');
   checkbox.addEventListener("change", () => editCompleted(item.id));
-  // Add event listener for edit button
   const editBtn = div.querySelector(".edit-btn");
   editBtn.addEventListener("click", () => setEditId(item.id));
-  // Add event listener for remove button
   const removeBtn = div.querySelector(".remove-btn");
   removeBtn.addEventListener("click", () => removeItem(item.id));
 
