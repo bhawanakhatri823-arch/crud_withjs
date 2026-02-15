@@ -1,7 +1,38 @@
 import { editCompleted, removeItem, setEditId } from "./app.js";
+
+function formatDueDate(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString + "T00:00:00");
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  if (date.toDateString() === today.toDateString()) {
+    return "Today";
+  } else if (date.toDateString() === tomorrow.toDateString()) {
+    return "Tomorrow";
+  }
+
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+// Check if due date is overdue
+function isOverdue(dateString) {
+  if (!dateString) return false;
+  const date = new Date(dateString + "T00:00:00");
+  const today = new Date();
+  return date < today;
+}
+
 export function createSingleItem(item) {
   const div = document.createElement("div");
   div.className = "single-item";
+
+  const dueDateClass =
+    item.dueDate && isOverdue(item.dueDate) ? " overdue" : "";
+  const dueDateDisplay = item.dueDate
+    ? `<span class="due-date${dueDateClass}">${formatDueDate(item.dueDate)}</span>`
+    : "";
 
   div.innerHTML = `
     <input type="checkbox" ${item.completed ? "checked" : ""} />
@@ -16,34 +47,14 @@ export function createSingleItem(item) {
     </button>
   `;
 
-  return div;
-}
-
-function createSingleItem(item) {
-  // ....
-
-  // Add event listener for checkbox
   const checkbox = div.querySelector('input[type="checkbox"]');
   checkbox.addEventListener("change", () => editCompleted(item.id));
-
-  return div;
-}
-
-function createSingleItem(item) {
-  // ....
-
+  // Add event listener for edit button
+  const editBtn = div.querySelector(".edit-btn");
+  editBtn.addEventListener("click", () => setEditId(item.id));
   // Add event listener for remove button
   const removeBtn = div.querySelector(".remove-btn");
   removeBtn.addEventListener("click", () => removeItem(item.id));
 
   return div;
-}
-
-// Create SingleItem Element
-export function createSingleItem(item) {
-  // ....
-
-  // Add event listener for edit button
-  const editBtn = div.querySelector(".edit-btn");
-  editBtn.addEventListener("click", () => setEditId(item.id));
 }
